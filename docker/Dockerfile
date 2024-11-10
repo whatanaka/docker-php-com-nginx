@@ -1,5 +1,5 @@
 ARG PHP_VERSION
-FROM php:${PHP_VERSION}
+FROM php:8.3-fpm-bullseye
 
 ## Diretório da aplicação
 ARG APP_DIR=/var/www/app
@@ -9,7 +9,7 @@ ARG REDIS_LIB_VERSION=5.3.7
 
 ### apt-utils é um extensão de recursos do gerenciador de pacotes APT
 RUN apt-get update -y && apt-get install -y --no-install-recommends \
-    apt-utils \ 
+    apt-utils \
     supervisor
 
 # dependências recomendadas de desenvolvido para ambiente linux
@@ -33,7 +33,7 @@ RUN docker-php-ext-install zip iconv simplexml pcntl gd fileinfo
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 COPY ./docker/supervisord/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-COPY ./docker/supervisord/conf /etc/supervisord.d/
+COPY ./docker/supervisord/supervisord.conf /etc/supervisord.d
 ### Supervisor permite monitorar e controlar vários processos (LINUX)
 ### Bastante utilizado para manter processos em Daemon, ou seja, executando em segundo plano
 
